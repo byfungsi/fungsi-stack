@@ -2,11 +2,19 @@
   "$schema": "https://json.schemastore.org/tsconfig.json",
   "display": "Default",
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "composite": false,
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "inlineSources": false,
+    "isolatedModules": true,
+    "module": "CommonJS",
     "moduleResolution": "node",
-    "outDir": "./build",
-    "strict": true,
-    "esModuleInterop": true
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "preserveWatchOutput": true,
+    "skipLibCheck": true,
+    "strict": true
   }
 }

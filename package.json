@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "dev": "urbo dev",
+    "dev": "turbo dev",
     "lint": "turbo lint",
     "preinstall": "npx only-allow pnpm",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",

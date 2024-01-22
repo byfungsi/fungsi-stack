@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only  src/index.ts",
     "build": "tsc",
-    "lint": "eslint . --max-warnings 0"
+    "clean": "rm -rf dist",
+    "dev": "nodemon --exec \"node -r esbuild-register ./src/index.ts\" -e .ts",
+    "lint": "tsc --noEmit && eslint \"src/**/*.ts*\" --max-warnings 0",
+    "start": "node -r esbuild-register ./src/index.ts",
+    "test": "jest --detectOpenHandles"
   },
   "dependencies": {
     "@mobily/ts-belt": "^3.13.1",
@@ -27,6 +30,7 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.0.4",
+    "@repo/database": "workspace:*",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@repo/validator": "workspace:*",
@@ -42,7 +46,10 @@
     "@types/react": "^18.2.46",
     "@types/react-dom": "^18.2.18",
     "add": "^2.0.6",
+    "esbuild": "^0.19.11",
+    "esbuild-register": "^3.5.0",
     "eslint": "^8.56.0",
+    "nodemon": "^3.0.3",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.3.3"
   }

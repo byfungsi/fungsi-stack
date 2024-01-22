@@ -9,7 +9,9 @@
     "ENCRYPT_KEY",
     "NODE_ENV",
     "MONGO_URL",
-    "NEXT_PUBLIC_API_URL"
+    "NEXT_PUBLIC_API_URL",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET"
   ],
   "pipeline": {
     "build": {
@@ -23,6 +25,12 @@
       "dotEnv": [".env"],
       "cache": false,
       "persistent": true
+    },
+    "db:generate": {
+      "cache": false
+    },
+    "db:push": {
+      "cache": false
     }
   }
 }

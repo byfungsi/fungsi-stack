@@ -1,8 +1,10 @@
 {
   "extends": "@repo/typescript-config/api.json",
   "compilerOptions": {
-    "outDir": "dist"
+    "lib": ["ES2015"],
+    "outDir": "dist",
+    "rootDir": "./src"
   },
   "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules"]
 }

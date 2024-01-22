@@ -15,5 +15,6 @@ module.exports = {
   },
   experimental: {
     outputFileTracingRoot: path.join(__dirname, "../../"),
+    optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
   },
 };
