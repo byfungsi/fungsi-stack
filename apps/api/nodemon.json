@@ -1,0 +1,5 @@
+{
+  "$schema": "https://json.schemastore.org/nodemon.json",
+  "ext": ".ts,.js",
+  "watch": ["src", "../../packages/validator/dist"]
+}

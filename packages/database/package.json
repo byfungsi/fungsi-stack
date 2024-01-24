@@ -7,11 +7,18 @@
     "@prisma/client": "latest"
   },
   "scripts": {
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push --skip-generate",
-    "db:reset": "prisma migrate reset"
+    "db:generate": "dotenv -e ../../.env prisma generate",
+    "db:push": "dotenv -e ../../.env prisma db push",
+    "db:reset": "dotenv -e ../../.env prisma migrate reset",
+    "db:seed": "dotenv -e ../../.env ts-node ./src/seed.ts",
+    "db:studio": "dotenv -e ../../.env prisma studio"
   },
   "devDependencies": {
-    "prisma": "latest"
+    "@types/node": "^20.10.6",
+    "dotenv": "^16.3.1",
+    "dotenv-cli": "^7.3.0",
+    "prisma": "latest",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   }
 }

@@ -27,12 +27,15 @@
       "persistent": true
     },
     "db:generate": {
+      "dotEnv": [".env"],
       "cache": false
     },
     "db:push": {
+      "dotEnv": [".env"],
       "cache": false
     },
-    "db:reset": {
+    "db:seed": {
+      "dotEnv": [".env"],
       "cache": false
     }
   }
