@@ -1,5 +1,6 @@
 import { ZodError } from "zod";
 import { Prisma } from "@repo/database";
+import { NotFoundError } from "../core/errors/NotFoundError";
 import { serializeError } from "./serializeError";
 
 export const createErrorResponse = (
@@ -13,6 +14,18 @@ export const createErrorResponse = (
       error: true,
       message: err.issues[0].message,
       detail: err.issues,
+      additionalData,
+    };
+  }
+  if (err instanceof NotFoundError) {
+    return {
+      code: errorCode,
+      errro: true,
+      message: err.message,
+      detail: {
+        entity: err.entity,
+        resource: err.resource,
+      },
       additionalData,
     };
   }

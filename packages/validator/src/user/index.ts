@@ -1,27 +1,42 @@
 import { z } from "zod";
 
+/**
+ * model User {
+  id            String        @id @default(uuid())
+  email         String        @unique
+  emailVerified Boolean       @default(false)
+  phoneNumber   String?       @unique
+  password      String
+  AccessToken   AccessToken[]
+  deletedAt     DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+ */
+
 export const ZUser = z.object({
   id: z.string(),
   email: z.string(),
   emailVerified: z.boolean(),
-  phoneNumber: z.string().nullable().optional(),
-  firstName: z.string(),
-  lastName: z.string(),
+  phoneNumber: z.string().optional().nullable(),
+  deletedAt: z.date().optional().nullable(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
 });
 
 export const ZUserSensitive = ZUser.extend({
+  clientId: z.string(),
   password: z.string(),
 });
 
-export const ZUserCreate = ZUser.omit({
-  id: true,
-  emailVerified: true,
-  phoneNumber: true,
-}).extend({
-  password: z.string(),
+export const ZUserCreate = ZUserSensitive.pick({
+  email: true,
+  password: true,
+  clientId: true,
 });
 
-export const ZUserLogin = ZUserCreate.pick({
+export const ZUserLogin = ZUserSensitive.pick({
   email: true,
   password: true,
 });

@@ -1,6 +1,8 @@
+import { MESSAGE } from "../constants/message";
+
 export const createSuccessResponse = (
   data: any,
-  message: string = "Success Request",
+  message: string = MESSAGE.SUCCESS_RESPONSE,
   meta?: any,
 ) => ({
   error: false,

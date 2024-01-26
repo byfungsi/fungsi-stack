@@ -34,6 +34,10 @@
       "dotEnv": [".env"],
       "cache": false
     },
+    "db:migrate": {
+      "dotEnv": [".env"],
+      "cache": false
+    },
     "db:seed": {
       "dotEnv": [".env"],
       "cache": false

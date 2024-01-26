@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import { ERROR_CODES } from "@repo/validator";
-import jwt from "jsonwebtoken";
+import { ERROR_CODES, ZClient } from "@repo/validator";
 import { R } from "@mobily/ts-belt";
-import logger from "../../../core/logger";
+import jwt from "jsonwebtoken";
 import parseBearerToken from "../../../utils/parseBearerToken";
 import processError from "../../../utils/processError";
 import HTTP_CODES from "../../../constants/httpCodes";
 import { MESSAGE } from "../../../constants/message";
+import accessTokenService from "../../accessToken/services";
+import processSuccess from "../../../utils/processSuccess";
 import { SIGN_KEY } from "../../../constants/apiEnvs";
 
 const serviceName = "user";
@@ -16,7 +17,7 @@ const verify = asyncHandler(async (req: Request, res: Response) => {
   const servicePath = "verify";
   res.locals.serviceName = serviceName;
   res.locals.servicePath = servicePath;
-  const profiler = logger.startTimer();
+  const client = ZClient.parse(res.locals.client);
 
   const token = parseBearerToken(req);
   if (!token) {
@@ -30,31 +31,40 @@ const verify = asyncHandler(async (req: Request, res: Response) => {
     );
     return;
   }
-  const RVerifyToken = R.fromExecution(() => jwt.verify(token, SIGN_KEY));
+  const RGetAccessToken = await R.fromPromise(
+    accessTokenService.getAccessTokenByAccessToken(token, client.uniqueId),
+  );
+  if (R.isError(RGetAccessToken)) {
+    R.tapError(
+      RGetAccessToken,
+      processError(
+        serviceName,
+        servicePath,
+        res,
+        HTTP_CODES.NOT_FOUND,
+        ERROR_CODES.INVALID_JWT,
+      ),
+    );
+    return;
+  }
+  const accessTokenData = R.getExn(RGetAccessToken);
+  const RVerifyToken = R.fromExecution(() =>
+    jwt.verify(accessTokenData.accessToken, SIGN_KEY),
+  );
   if (R.isError(RVerifyToken)) {
-    R.tapError(RVerifyToken, (err: Error) => {
-      let errorObj = err;
-      let errorCode: number = ERROR_CODES.INTERNAL_CLIENT_ERROR;
-      if (err instanceof jwt.TokenExpiredError) {
-        errorObj = new Error(MESSAGE.SESSION_EXPIRED);
-        errorCode = ERROR_CODES.JWT_EXPIRED;
-      }
-      if (err instanceof jwt.JsonWebTokenError) {
-        errorObj = new Error(MESSAGE.INVALID_SESSION);
-        errorCode = ERROR_CODES.INVALID_JWT;
-      }
+    R.tapError(
+      RVerifyToken,
       processError(
         serviceName,
         servicePath,
         res,
         HTTP_CODES.UNAUTHORIZED,
-        errorCode,
-        errorObj,
-      );
-    });
+        ERROR_CODES.JWT_EXPIRED,
+      ),
+    );
     return;
   }
-  profiler.done();
+  processSuccess(res, serviceName, servicePath, {});
 });
 
 export default verify;

@@ -6,4 +6,6 @@ export const MESSAGE = {
   EMAIL_TAKEN: "Email already taken",
   INVALID_SESSION: "Invalid session",
   SESSION_EXPIRED: "Session Expired",
+  CLIENT_NOT_FOUND: "Client not found",
+  SUCCESS_RESPONSE: "Success Request",
 };

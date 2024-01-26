@@ -9,14 +9,19 @@ datasource db {
 
 model User {
   id            String        @id @default(uuid())
-  email         String        @unique
+  clientId      String
+  client        Client        @relation(fields: [clientId], references: [uniqueId])
+  email         String
   emailVerified Boolean       @default(false)
-  phoneNumber   String?       @unique
+  phoneNumber   String?
   password      String
   AccessToken   AccessToken[]
   deletedAt     DateTime?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+
+  @@unique([clientId, email])
+  @@unique([clientId, phoneNumber])
 }
 
 model Client {
@@ -28,22 +33,25 @@ model Client {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   deletedAt   DateTime?
-  Providers   Providers[]
+  Providers   Provider[]
+  User        User[]
 }
 
 model AccessToken {
   id           String   @id @default(uuid())
-  accessToken  String
-  refreshToken String
+  accessToken  String   @unique
+  refreshToken String   @unique
   userId       String
   user         User     @relation(fields: [userId], references: [id])
   clientId     String
   client       Client   @relation(fields: [clientId], references: [uniqueId])
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+
+  @@unique(name: "uniqueTokenId", [userId, clientId])
 }
 
-model Providers {
+model Provider {
   id                   String   @id @default(uuid())
   clientId             String
   client               Client   @relation(fields: [clientId], references: [id])

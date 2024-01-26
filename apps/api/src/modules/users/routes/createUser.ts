@@ -1,4 +1,4 @@
-import { ERROR_CODES, ZUser, ZUserCreate } from "@repo/validator";
+import { ERROR_CODES, ZClient, ZUser, ZUserCreate } from "@repo/validator";
 import asyncHandler from "express-async-handler";
 import { R } from "@mobily/ts-belt";
 import HTTP_CODES from "../../../constants/httpCodes";
@@ -13,7 +13,11 @@ const createUser = asyncHandler(async (req, res) => {
   const servicePath = "create";
   res.locals.serviceName = serviceName;
   res.locals.servicePath = servicePath;
-  const bodyValidation = ZUserCreate.safeParse(req.body);
+  const client = ZClient.parse(res.locals.client);
+  const bodyValidation = ZUserCreate.safeParse({
+    ...req.body,
+    clientId: client.uniqueId,
+  });
   if (!bodyValidation.success) {
     processError(
       serviceName,

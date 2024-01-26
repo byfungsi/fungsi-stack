@@ -1,8 +1,8 @@
 import { serializeError } from "./serializeError";
 
 export const createErrorLog = (
-  serviceName: string,
-  servicePath: string,
+  serviceName: string = "",
+  servicePath: string = "",
   errorCodes: number,
   errorObject: any,
   additionalData?: any,

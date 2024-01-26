@@ -1,11 +1,7 @@
-import { Button } from "@mantine/core";
+import { redirect } from "next/navigation";
 
 const RootPath = () => {
-  return (
-    <div>
-      <Button>Hello mantine</Button>
-    </div>
-  );
+  redirect("/login");
 };
 
 export default RootPath;

@@ -1,22 +1,9 @@
 import { Router } from "express";
-import login from "./login";
+import clientMiddleware from "../../middleware/clientMiddleware";
 import createUser from "./createUser";
 
 const userRouter = Router();
 
-// userRouter.get(
-//   "/",
-//   asyncHandler(async (req, res) => {
-//     res.json(
-//       createSuccessResponse(
-//         (await userServices.getAllUser()).map((u) => ZUser.parse(u)),
-//       ),
-//     );
-//   }),
-// );
-
-userRouter.post("/", createUser);
-
-userRouter.post("/auth/login", login);
+userRouter.post("/", clientMiddleware, createUser);
 
 export default userRouter;
