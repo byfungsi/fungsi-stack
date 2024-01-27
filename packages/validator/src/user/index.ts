@@ -18,6 +18,7 @@ import { z } from "zod";
 export const ZUser = z.object({
   id: z.string(),
   email: z.string(),
+  name: z.string(),
   emailVerified: z.boolean(),
   phoneNumber: z.string().optional().nullable(),
   deletedAt: z.date().optional().nullable(),
@@ -33,6 +34,7 @@ export const ZUserSensitive = ZUser.extend({
 export const ZUserCreate = ZUserSensitive.pick({
   email: true,
   password: true,
+  name: true,
   clientId: true,
 });
 
