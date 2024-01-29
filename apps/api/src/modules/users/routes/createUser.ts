@@ -31,7 +31,7 @@ const createUser = asyncHandler(async (req, res) => {
   }
   const { data: validatedBody } = bodyValidation;
   const RCheckUserEmail = await R.fromPromise(
-    userServices.getUserByEmail(validatedBody.email),
+    userServices.getUserByEmail(validatedBody.email, client.uniqueId),
   );
   if (R.isError(RCheckUserEmail)) {
     R.tapError(

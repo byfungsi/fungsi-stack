@@ -7,9 +7,9 @@ if (fs.existsSync(path.join(__dirname, "../../../.env"))) {
   dotenv.config({ path: path.join(__dirname, "../../../.env") });
 }
 
-export default async function setup() {
+export async function setup() {
   process.env.DATABASE_URL = process.env.TEST_DATABASE_URL;
-
+  console.log("setup start");
   execSync(
     ` npx turbo db:down --filter database && npx turbo db:push --filter database &&  npx turbo db:seed --filter database`,
     {
@@ -18,4 +18,14 @@ export default async function setup() {
       },
     },
   );
+}
+
+export async function teardown() {
+  process.env.DATABASE_URL = process.env.TEST_DATABASE_URL;
+  console.log("tear down");
+  execSync(`npx turbo db:down --filter database`, {
+    env: {
+      ...process.env,
+    },
+  });
 }

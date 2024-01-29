@@ -18,10 +18,12 @@ const intent = asyncHandler(async (req: Request, res: Response) => {
   const profiler = logger.startTimer();
 
   const schema = z.object({ clientId: z.string() });
-  const RBodyValidation = R.fromExecution(() =>
-    schema.parse({
-      clientId: process.env.SELF_CLIENT_ID,
-    }),
+  const clientBody = {
+    clientId: process.env.SELF_CLIENT_ID,
+  };
+  const RBodyValidation = R.fromExecution(() => schema.parse(clientBody));
+  logger.info(
+    `Halo ${schema.parse({ clientId: process.env.SELF_CLIENT_ID }).clientId}`,
   );
   if (R.isError(RBodyValidation)) {
     R.tapError(

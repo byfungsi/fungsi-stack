@@ -1,9 +1,8 @@
-import "../utils/configureDotEnv";
 import express, { Request, Response } from "express";
 import cors from "cors";
 import compression from "compression";
 import cookieParser from "cookie-parser";
-import { API_PORT, ORIGINS } from "../constants/apiEnvs";
+import { ORIGINS } from "../constants/apiEnvs";
 import apiRouter from "../modules";
 import morganMiddleware from "./morganMiddleware";
 import errorHandler from "./errorHandler";
@@ -32,6 +31,4 @@ app.get("/health", async (_req: Request, res: Response) =>
 
 app.use(errorHandler);
 
-app.listen(API_PORT, () => {
-  console.log(`Server is running on port ${API_PORT}`);
-});
+export { app };
