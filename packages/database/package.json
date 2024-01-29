@@ -11,13 +11,17 @@
     "db:push": "dotenv -e ../../.env prisma db push",
     "db:reset": "dotenv -e ../../.env prisma migrate reset",
     "db:seed": "dotenv -e ../../.env ts-node ./src/seed.ts",
-    "db:migrate": "dotenv -e ../../.env prisma migrate dev",
-    "db:studio": "dotenv -e ../../.env prisma studio"
+    "db:migrate:dev": "dotenv -e ../../.env prisma migrate dev",
+    "db:studio": "dotenv -e ../../.env prisma studio",
+    "db:migrate": "dotenv -e ../../.env prisma migrate deploy",
+    "db:down": "dotenv -e ../../.env ts-node ./src/down.ts"
   },
   "devDependencies": {
     "@types/node": "^20.10.6",
+    "@types/pg": "^8.11.0",
     "dotenv": "^16.3.1",
     "dotenv-cli": "^7.3.0",
+    "pg": "^8.11.3",
     "prisma": "latest",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"

@@ -9,8 +9,7 @@
     "preinstall": "npx only-allow pnpm",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check:prettier": "prettier --check \"**/*.{ts,tsx,md}\"",
-    "prepare": "husky install",
-    "ui:add": "pnpm --filter web ui:add"
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@commitlint/cli": "^18.4.4",
