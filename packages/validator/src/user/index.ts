@@ -38,13 +38,7 @@ export const ZUserCreate = ZUserSensitive.pick({
   clientId: true,
 });
 
-export const ZUserLogin = ZUserSensitive.pick({
-  email: true,
-  password: true,
-});
-
 export type TUser = z.infer<typeof ZUser>;
 export type TUserSensitve = z.infer<typeof ZUserSensitive>;
 
 export type TUserCreate = z.infer<typeof ZUserCreate>;
-export type TUserLogin = z.infer<typeof ZUserLogin>;
