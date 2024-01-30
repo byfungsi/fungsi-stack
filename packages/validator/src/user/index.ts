@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { stringToDateTransformer } from "../utils/dateTransformer";
 
 /**
  * model User {
@@ -21,9 +22,13 @@ export const ZUser = z.object({
   name: z.string(),
   emailVerified: z.boolean(),
   phoneNumber: z.string().optional().nullable(),
-  deletedAt: z.date().optional().nullable(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  deletedAt: z
+    .union([z.date(), z.string()])
+    .optional()
+    .nullable()
+    .transform(stringToDateTransformer),
+  createdAt: z.union([z.date(), z.string()]).transform(stringToDateTransformer),
+  updatedAt: z.union([z.date(), z.string()]).transform(stringToDateTransformer),
 });
 
 export const ZUserSensitive = ZUser.extend({

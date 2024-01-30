@@ -1,8 +1,14 @@
 import request from "supertest";
-import { ERROR_CODES, TCreateUserRequest, TUserLogin } from "@repo/validator";
+import {
+  ERROR_CODES,
+  TCreateUserRequest,
+  TUserLogin,
+  ZLoginResponse,
+  ROUTES,
+  withBaseUrl,
+} from "@repo/validator";
 import { app } from "../../../../core/app";
 import HTTP_CODES from "../../../../constants/httpCodes";
-import { ROUTES, withBaseUrl } from "../../../../constants/routes";
 
 const RoutePath = withBaseUrl(ROUTES.login);
 let reqIntent: request.Agent;
@@ -72,6 +78,7 @@ describe("Login Route", () => {
       const res = await reqIntent.post(RoutePath).send(body);
 
       expect(res.status).toBe(HTTP_CODES.SUCCESS);
+      expect(ZLoginResponse.safeParse(res.body).success).toBe(true);
     });
   });
 });

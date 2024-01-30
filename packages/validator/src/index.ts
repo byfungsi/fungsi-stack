@@ -5,3 +5,4 @@ export * from "./accessToken";
 export * from "./client";
 export * from "./providers";
 export * from "./request/index";
+export * from "./routes";

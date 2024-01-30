@@ -1,10 +1,16 @@
 import request from "supertest";
-import { ERROR_CODES, TCreateUserRequest } from "@repo/validator";
+import {
+  ERROR_CODES,
+  ROUTES,
+  TCreateUserRequest,
+  ZCreateUserResponse,
+  withBaseUrl,
+} from "@repo/validator";
 import { app } from "../../../../core/app";
 import HTTP_CODES from "../../../../constants/httpCodes";
 import { MESSAGE } from "../../../../constants/message";
 
-const RoutePath = "/api/users";
+const RoutePath = withBaseUrl(ROUTES.user);
 describe("create user route", () => {
   test("should error when accessed without client secret", async () => {
     const res = await request(app).post(RoutePath);
@@ -15,7 +21,7 @@ describe("create user route", () => {
     let reqIntent: request.Agent;
     beforeAll(async () => {
       reqIntent = request.agent(app);
-      await reqIntent.post("/api/auth/intent");
+      await reqIntent.post(withBaseUrl(ROUTES.intent));
     });
 
     test("should error on invalid body", async () => {
@@ -34,6 +40,8 @@ describe("create user route", () => {
         password: "userPassword123!",
       };
       const res = await reqIntent.post(RoutePath).send(body);
+      const bodyValidation = ZCreateUserResponse.safeParse(res.body);
+      expect(bodyValidation.success).toBe(true);
       expect(res.status).toBe(HTTP_CODES.SUCCESS);
     });
 
