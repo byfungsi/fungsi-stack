@@ -1,5 +1,3 @@
-import { serializeError } from "./serializeError";
-
 export const createErrorLog = (
   serviceName: string = "",
   servicePath: string = "",
@@ -12,6 +10,6 @@ export const createErrorLog = (
     serviceName,
     servicePath,
     errorCodes,
-    errorObject: serializeError(errorObject),
+    errorObject: errorObject,
     additionalData,
   });

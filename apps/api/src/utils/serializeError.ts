@@ -3,5 +3,6 @@ export const serializeError = (err: Error) => {
     JSON.stringify(err, Object.getOwnPropertyNames(err)),
   );
   delete serialized.stack;
+
   return serialized;
 };

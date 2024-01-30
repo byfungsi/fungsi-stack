@@ -30,7 +30,7 @@ const _getUserByEmail = (email: string, clientId: string) =>
   });
 
 const getUserByEmail = (email: string, clientId: string) =>
-  _getUserByEmail(email, clientId).then(ZUser.parse);
+  _getUserByEmail(email, clientId);
 
 const getUserByEmailSensitive = (email: string, clientId: string) =>
   _getUserByEmail(email, clientId)
