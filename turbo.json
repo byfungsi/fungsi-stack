@@ -9,6 +9,7 @@
     "ENCRYPT_KEY",
     "NODE_ENV",
     "MONGO_URL",
+    "NO_SERVER",
     "NEXT_PUBLIC_API_URL",
     "GOOGLE_CLIENT_ID",
     "TEST_DATABASE_URL",

@@ -1,9 +1,10 @@
 "use client";
 import axios from "axios";
-import { ERROR_CODES, TBackendResponse } from "@repo/validator";
+import { ERROR_CODES } from "@repo/validator";
 import { R } from "@mobily/ts-belt";
 import { getCookie, hasCookie, setCookie } from "cookies-next";
 import { API_URL } from "../_constants/appEnv";
+import { TOKEN_KEY } from "../_constants/keys";
 
 const fidAxios = axios.create({
   baseURL: `${API_URL}/api`,
@@ -11,22 +12,19 @@ const fidAxios = axios.create({
 });
 
 fidAxios.interceptors.request.use(
-  (config) => {
+  async (config) => {
     config.headers["Accept"] = "application/json";
     config.headers["Content-Type"] = config.headers["Content-Type"]
       ? config.headers["Content-Type"]
       : "application/json";
-    if (hasCookie("accessToken")) {
-      config.headers["Authorization"] = `Bearer ${getCookie("accessToken")}`;
+
+    if (hasCookie(TOKEN_KEY)) {
+      config.headers["Authorization"] = `Bearer ${getCookie(TOKEN_KEY)}`;
     }
     return config;
   },
   (error) => Promise.reject(error),
 );
-
-type RefreshBackendResponse = TBackendResponse<{
-  accessToken: string;
-}>;
 
 fidAxios.interceptors.response.use(
   (response) => response,
@@ -44,14 +42,14 @@ fidAxios.interceptors.response.use(
     ) {
       originalRequest._retryCount += 1;
       const RResponse = await R.fromPromise(
-        fidAxios.post<RefreshBackendResponse>("/users/refresh-token"),
+        fidAxios.post("/users/refresh-token"),
       );
       if (R.isError(RResponse)) {
         return Promise.reject(error);
       }
       const response = R.toNullable(RResponse)!;
       if (response.data?.data.accessToken) {
-        setCookie("accessToken", response.data.data.accessToken);
+        setCookie(TOKEN_KEY, response.data.data.accessToken);
       }
       return Promise.resolve();
     }

@@ -40,7 +40,6 @@ module.exports = {
     "@typescript-eslint/no-explicit-any": "off",
     "import/no-default-export": "off",
     "no-unused-vars": "off",
-    "no-restricted-syntax": ["error", "TryStatement"],
     "@typescript-eslint/no-unused-vars": [
       "warn", // or "error"
       {

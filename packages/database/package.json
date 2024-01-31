@@ -9,7 +9,7 @@
   "scripts": {
     "db:generate": "dotenv -e ../../.env prisma generate",
     "db:push": "dotenv -e ../../.env prisma db push",
-    "db:reset": "dotenv -e ../../.env prisma migrate reset",
+    "db:reset": "dotenv -e ../../.env prisma migrate reset --force",
     "db:seed": "dotenv -e ../../.env ts-node ./src/seed.ts",
     "db:migrate:dev": "dotenv -e ../../.env prisma migrate dev",
     "db:studio": "dotenv -e ../../.env prisma studio",

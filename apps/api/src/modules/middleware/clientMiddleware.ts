@@ -16,6 +16,7 @@ const clientMiddleware = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     res.locals.serviceName = serviceName;
     res.locals.servicePath = servicePath;
+    console.log(req.cookies.clientSecret, "asli lur");
     const RGetClientSecret = R.fromExecution(() =>
       getOrThrowNotFound<string>(
         ENTITIES.clientSecret,

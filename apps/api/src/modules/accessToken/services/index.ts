@@ -84,9 +84,18 @@ const verifyRefreshToken = (accessTokenData: TAccessToken) => {
 
 const verifyAccessToken = (accessTokenData: TAccessToken) => {
   jwt.verify(accessTokenData.accessToken, SIGN_KEY);
-  console.log("here");
   return accessTokenData;
 };
+
+const deleteAccessTokenByUserId = (clientId: string, userId: string) =>
+  prismaClient.accessToken.delete({
+    where: {
+      uniqueTokenId: {
+        clientId,
+        userId,
+      },
+    },
+  });
 
 const getOrCreateAccessTokenByUser = (userId: string, clientId: string) =>
   prismaClient.accessToken
@@ -113,10 +122,12 @@ const getAccessTokenByAccessToken = (accessToken: string, clientId: string) =>
     })
     .then(getOrThrowNotFound(ENTITIES.accessToken, RESOURCES.database))
     .then(ZAccessToken.parse);
+
 const accessTokenService = {
   getOrCreateAccessTokenByUser,
   verifyAccessToken,
   getAccessTokenByAccessToken,
+  deleteAccessTokenByUserId,
 };
 
 export default accessTokenService;

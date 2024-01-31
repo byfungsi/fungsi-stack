@@ -20,7 +20,7 @@ export const createErrorResponse = (
   if (err instanceof NotFoundError) {
     return {
       code: errorCode,
-      errro: true,
+      error: true,
       message: err.message,
       detail: {
         entity: err.entity,
