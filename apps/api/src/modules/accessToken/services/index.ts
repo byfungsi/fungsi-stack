@@ -112,12 +112,11 @@ const getOrCreateAccessTokenByUser = (userId: string, clientId: string) =>
     .then(verifyAccessToken)
     .catch(handleTokenExpired(userId, clientId));
 
-const getAccessTokenByAccessToken = (accessToken: string, clientId: string) =>
+const getAccessTokenByAccessToken = (accessToken: string) =>
   prismaClient.accessToken
     .findFirst({
       where: {
         accessToken,
-        clientId,
       },
     })
     .then(getOrThrowNotFound(ENTITIES.accessToken, RESOURCES.database))

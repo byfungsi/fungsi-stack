@@ -37,11 +37,23 @@ const getUserByEmailSensitive = (email: string, clientId: string) =>
     .then(getOrThrowNotFound(ENTITIES.user, RESOURCES.database))
     .then(ZUserSensitive.parse);
 
+const getUserById = (id: string, clientId: string) =>
+  prismaClient.user
+    .findFirst({
+      where: {
+        id,
+        clientId,
+      },
+    })
+    .then(getOrThrowNotFound("user", "database"))
+    .then(ZUser.parse);
+
 const userServices = {
   getAllUser,
   createUser,
   getUserByEmail,
   getUserByEmailSensitive,
+  getUserById,
 };
 
 export default userServices;

@@ -10,7 +10,7 @@ import { app } from "../../../../core/app";
 import HTTP_CODES from "../../../../constants/httpCodes";
 import { MESSAGE } from "../../../../constants/message";
 
-const RoutePath = withBaseUrl(ROUTES.user);
+const RoutePath = withBaseUrl(ROUTES.administrationUsers);
 describe("create user route", () => {
   test("should error when accessed without client secret", async () => {
     const res = await request(app).post(RoutePath);

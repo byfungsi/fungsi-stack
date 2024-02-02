@@ -8,6 +8,7 @@ import HTTP_CODES from "../../constants/httpCodes";
 import clientService from "../client/services";
 import ENTITIES from "../../constants/entities";
 import RESOURCES from "../../constants/resources";
+import parseClientSecret from "../../utils/parseClientSecret";
 
 const serviceName = "middleware";
 const servicePath = "clientMiddleware";
@@ -16,12 +17,11 @@ const clientMiddleware = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     res.locals.serviceName = serviceName;
     res.locals.servicePath = servicePath;
-    console.log(req.cookies.clientSecret, "asli lur");
     const RGetClientSecret = R.fromExecution(() =>
-      getOrThrowNotFound<string>(
+      getOrThrowNotFound(
         ENTITIES.clientSecret,
         RESOURCES.cookies,
-        req.cookies.clientSecret,
+        parseClientSecret(req),
       ),
     );
     if (R.isError(RGetClientSecret)) {

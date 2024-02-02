@@ -1,4 +1,13 @@
+import { D } from "@mobily/ts-belt";
 import { MESSAGE } from "../constants/message";
+
+const stripSensitive = (data: any) =>
+  D.deleteKeys(data, [
+    "accessToken",
+    "refreshToken",
+    "password",
+    "clientSecret",
+  ]);
 
 export const createSuccessLog = (
   serviceName: string,
@@ -11,5 +20,5 @@ export const createSuccessLog = (
     message,
     serviceName,
     servicePath,
-    data,
+    data: stripSensitive(data),
   });

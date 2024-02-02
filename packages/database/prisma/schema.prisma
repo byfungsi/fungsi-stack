@@ -20,6 +20,7 @@ model User {
   deletedAt     DateTime?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+  ClientOwner   ClientOwner[]
 
   @@unique([clientId, email])
   @@unique([clientId, phoneNumber])
@@ -36,6 +37,23 @@ model Client {
   deletedAt   DateTime?
   Providers   Provider[]
   User        User[]
+  ClientOwner ClientOwner[]
+}
+
+model Application {
+  id        String    @id @default(uuid())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model ClientOwner {
+  id       String @id @default(uuid())
+  clientId String
+  client   Client @relation(fields: [clientId], references: [uniqueId])
+  ownerId  String
+  owner    User   @relation(fields: [ownerId], references: [id])
 }
 
 model AccessToken {

@@ -1,12 +1,12 @@
 import { ERROR_CODES, ZClient, ZUser, ZUserCreate } from "@repo/validator";
 import asyncHandler from "express-async-handler";
 import { R } from "@mobily/ts-belt";
-import HTTP_CODES from "../../../constants/httpCodes";
-import { hash } from "../../../utils/hash";
-import userServices from "../services";
-import processError from "../../../utils/processError";
-import { MESSAGE } from "../../../constants/message";
-import processSuccess from "../../../utils/processSuccess";
+import HTTP_CODES from "../../../../constants/httpCodes";
+import { hash } from "../../../../utils/hash";
+import userServices from "../../../users/services";
+import processError from "../../../../utils/processError";
+import { MESSAGE } from "../../../../constants/message";
+import processSuccess from "../../../../utils/processSuccess";
 
 const serviceName = "user";
 const createUser = asyncHandler(async (req, res) => {

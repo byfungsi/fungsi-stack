@@ -18,7 +18,7 @@ import { stringToDateTransformer } from "../utils/dateTransformer";
 
 export const ZUser = z.object({
   id: z.string(),
-  email: z.string(),
+  email: z.string().transform((e) => e.toLowerCase()),
   name: z.string(),
   emailVerified: z.boolean(),
   phoneNumber: z.string().optional().nullable(),

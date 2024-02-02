@@ -1,4 +1,4 @@
-import { defineProject } from "vitest/config";
+import { defineProject, configDefaults } from "vitest/config";
 import { setup, teardown } from "./__test__/globalSetup";
 
 export default defineProject({
@@ -6,6 +6,8 @@ export default defineProject({
     globals: true,
     globalSetup: ["./__test__/globalSetup.ts"],
     setupFiles: ["./__test__/setupEnvs.ts"],
+    exclude: [...configDefaults.exclude],
+    pool: "forks",
     reporters: [
       "default",
       {

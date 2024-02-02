@@ -33,6 +33,7 @@ const logger = winston.createLogger({
   levels: winston.config.syslog.levels,
   level: "info",
   format: winston.format.cli(),
+  silent: process.env.NODE_ENV === "test",
   transports: [
     new winston.transports.Console(),
     combinedFileTransport,

@@ -61,9 +61,15 @@ export default function AuthAppShell({
         <AppShell.Navbar>
           <AppShell.Section>
             <NavLink
-              label="halo"
+              label="Welcome"
               component={Link}
-              href="/login"
+              href="/welcome"
+              description={"mana ada"}
+            />
+            <NavLink
+              label="Client Management"
+              component={Link}
+              href="/clients"
               description={"mana ada"}
             />
           </AppShell.Section>

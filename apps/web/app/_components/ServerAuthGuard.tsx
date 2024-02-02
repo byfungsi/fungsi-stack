@@ -1,11 +1,12 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { PropsWithChildren } from "react";
 import { ROUTES, withBaseUrl } from "@repo/validator";
-import { TOKEN_KEY } from "./_constants/keys";
-import { API_URL } from "./_constants/appEnv";
+import { TOKEN_KEY } from "../_constants/keys";
+import { API_URL } from "../_constants/appEnv";
 
-const RootPath = async () => {
-  if (!cookies().get(TOKEN_KEY)) {
+const ServerAuthGuard = async ({ children }: PropsWithChildren) => {
+  if (!cookies().has(TOKEN_KEY)) {
     redirect("/login");
   }
   const token = cookies().get(TOKEN_KEY);
@@ -20,7 +21,8 @@ const RootPath = async () => {
   if (!res.ok) {
     redirect("/login");
   }
-  redirect("/welcome");
+
+  return <>{children}</>;
 };
 
-export default RootPath;
+export default ServerAuthGuard;

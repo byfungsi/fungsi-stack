@@ -1,10 +1,12 @@
 "use client";
 import {
   Anchor,
+  Box,
   Button,
   Card,
   Center,
   Flex,
+  Group,
   PasswordInput,
   Space,
   Text,
@@ -53,45 +55,65 @@ const LoginPage = () => {
   };
   return (
     <Center h="100dvh">
-      <Card shadow="sm" radius="md" withBorder w="420px" p="lg">
-        <Flex
-          renderRoot={(props) => (
-            <form {...props} onSubmit={form.onSubmit(handleSubmit)} />
-          )}
-          direction="column"
-          gap="md"
-          px="lg"
-          py="md"
+      <Box pos="relative">
+        <Center
+          bg="brand.7"
+          c="white"
+          className="-rotate-90   rounded-tl-md rounded-tr-md left-[-94px] top-20"
+          pos="absolute"
+          pb="lg"
+          pt="xs"
+          px="md"
         >
-          <Title order={3} ta="center">
-            Log in
-          </Title>
-          <TextInput
-            label="Email"
-            type="email"
-            placeholder="name@acme.com"
-            {...form.getInputProps("email")}
-          />
-          <PasswordInput
-            label="Password"
-            placeholder="••••••••••"
-            {...form.getInputProps("password")}
-          />
-          <Button type="submit" loading={isPending}>
-            Continue
-          </Button>
-          <Space h="sm" />
-          <Text size="sm" ta="center">
-            <span>{`Don't have account? `}</span>
-            <Anchor component={Link} href="/signup">
-              Sign up
-            </Anchor>
-          </Text>
-          <Text ta="center" size="xs">
-            <Anchor href="/privacy">Privacy Policy</Anchor>
-          </Text>
-        </Flex>
-      </Card>
+          <Group gap="xs" align="center">
+            <Text fw={600} size="xs">
+              Secured by
+            </Text>
+            <Text size="sm" fw="bolder">
+              FUNGSI
+            </Text>
+          </Group>
+        </Center>
+        <Card shadow="sm" radius="md" withBorder w="420px" p="lg">
+          <Flex
+            renderRoot={(props) => (
+              <form {...props} onSubmit={form.onSubmit(handleSubmit)} />
+            )}
+            direction="column"
+            gap="md"
+            px="lg"
+            py="md"
+          >
+            <Title order={3} ta="center">
+              Log in
+            </Title>
+            <TextInput
+              label="Email"
+              type="email"
+              placeholder="name@acme.com"
+              {...form.getInputProps("email")}
+            />
+            <PasswordInput
+              label="Password"
+              placeholder="••••••••••"
+              {...form.getInputProps("password")}
+            />
+            <Button type="submit" loading={isPending}>
+              Continue
+            </Button>
+            <Space h="sm" />
+            <Text size="sm" ta="center">
+              <span>{`Don't have account? `}</span>
+              <Anchor component={Link} href="/signup">
+                Sign up
+              </Anchor>
+            </Text>
+            <Text ta="center" size="xs">
+              <Anchor href="/privacy">Privacy Policy</Anchor>
+            </Text>
+          </Flex>
+        </Card>
+      </Box>
     </Center>
   );
 };

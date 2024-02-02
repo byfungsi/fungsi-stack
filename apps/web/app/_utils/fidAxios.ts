@@ -37,7 +37,7 @@ fidAxios.interceptors.response.use(
       ? originalRequest._retryCount
       : 0;
     if (
-      error.response?.data?.code === ERROR_CODES.JWT_EXPIRED &&
+      error.response?.data?.code === ERROR_CODES.ACCESS_TOKEN_EXPIRED &&
       originalRequest._retryCount <= 3
     ) {
       originalRequest._retryCount += 1;
@@ -52,6 +52,11 @@ fidAxios.interceptors.response.use(
         setCookie(TOKEN_KEY, response.data.data.accessToken);
       }
       return Promise.resolve();
+    }
+    if (error.response?.data?.code === ERROR_CODES.ACCESS_TOKEN_EXPIRED) {
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
+      }
     }
     return Promise.reject(error);
   },

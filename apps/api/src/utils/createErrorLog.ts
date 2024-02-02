@@ -1,3 +1,5 @@
+import { serializeError } from "./serializeError";
+
 export const createErrorLog = (
   serviceName: string = "",
   servicePath: string = "",
@@ -10,6 +12,9 @@ export const createErrorLog = (
     serviceName,
     servicePath,
     errorCodes,
-    errorObject: errorObject,
+    errorObject:
+      process.env.NODE_ENV === "production"
+        ? serializeError(errorObject)
+        : errorObject,
     additionalData,
   });

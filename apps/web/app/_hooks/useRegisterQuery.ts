@@ -9,7 +9,7 @@ import { withIntentRequest } from "../_utils/withIntentRequest";
 
 const register = (param: TCreateUserRequest) =>
   withIntentRequest(() =>
-    fidAxios.post<TCreateUserResponse>(ROUTES.user, param),
+    fidAxios.post<TCreateUserResponse>(ROUTES.administrationUsers, param),
   );
 
 const useRegisterQuery = () => {

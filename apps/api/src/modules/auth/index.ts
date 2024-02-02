@@ -1,13 +1,14 @@
 import { Router } from "express";
 import clientMiddleware from "../middleware/clientMiddleware";
+import verifyMiddleware from "../middleware/verifyMiddleware";
 import login from "./routes/login";
-import intent from "./routes/intent";
 import verify from "./routes/verify";
+import logout from "./routes/logout";
 
 const authRouter = Router();
 
-authRouter.post("/intent", intent);
 authRouter.post("/login", clientMiddleware, login);
-authRouter.post("/verify", clientMiddleware, verify);
+authRouter.post("/logout", verifyMiddleware, logout);
+authRouter.post("/verify", verify);
 
 export default authRouter;

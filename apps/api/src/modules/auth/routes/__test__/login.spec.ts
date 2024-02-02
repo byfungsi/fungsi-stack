@@ -7,13 +7,14 @@ import {
   ROUTES,
   withBaseUrl,
 } from "@repo/validator";
+import { vi, describe, beforeAll, test, expect } from "vitest";
+import dayjs from "dayjs";
 import { app } from "../../../../core/app";
 import HTTP_CODES from "../../../../constants/httpCodes";
 
-const RoutePath = withBaseUrl(ROUTES.login);
-let reqIntent: request.Agent;
-
 describe("Login Route", () => {
+  const RoutePath = withBaseUrl(ROUTES.login);
+  let reqIntent: request.Agent;
   beforeAll(async () => {
     reqIntent = request.agent(app);
     await reqIntent.post(withBaseUrl(ROUTES.intent));
@@ -53,7 +54,9 @@ describe("Login Route", () => {
         password: PASSWORD,
         name: NAME,
       };
-      await reqIntent.post(withBaseUrl(ROUTES.user)).send(bodyCreate);
+      await reqIntent
+        .post(withBaseUrl(ROUTES.administrationUsers))
+        .send(bodyCreate);
     });
 
     test("wrong password", async () => {
@@ -79,6 +82,59 @@ describe("Login Route", () => {
 
       expect(res.status).toBe(HTTP_CODES.SUCCESS);
       expect(ZLoginResponse.safeParse(res.body).success).toBe(true);
+      expect(res.headers["set-cookie"]).toEqual([
+        expect.stringContaining("refreshToken"),
+      ]);
+    });
+  });
+
+  describe("Expiration", () => {
+    const EMAIL = "email123.com";
+    const PASSWORD = "password123";
+    const NAME = "name12312";
+    beforeAll(async () => {
+      const bodyCreate: TCreateUserRequest = {
+        email: EMAIL,
+        password: PASSWORD,
+        name: NAME,
+      };
+      await reqIntent
+        .post(withBaseUrl(ROUTES.administrationUsers))
+        .send(bodyCreate);
+    });
+
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    test("access token expired after 5m", async () => {
+      const body: TUserLogin = {
+        email: EMAIL,
+        password: PASSWORD,
+      };
+      const res = await reqIntent.post(RoutePath).send(body);
+      const loginBody = ZLoginResponse.parse(res.body);
+
+      const verify1 = await reqIntent.post(withBaseUrl(ROUTES.verify)).set({
+        Authorization: `Bearer ${loginBody.data.accessToken}`,
+      });
+      expect(verify1.status).toBe(HTTP_CODES.SUCCESS);
+
+      vi.setSystemTime(dayjs().add(10, "minute").toDate());
+
+      const verify2 = await reqIntent.post(withBaseUrl(ROUTES.verify)).set({
+        Authorization: `Bearer ${loginBody.data.accessToken}`,
+      });
+      expect(verify2.status).toBe(HTTP_CODES.UNAUTHORIZED);
+      expect(verify2.body).toStrictEqual(
+        expect.objectContaining({
+          code: ERROR_CODES.ACCESS_TOKEN_EXPIRED,
+        }),
+      );
     });
   });
 });
