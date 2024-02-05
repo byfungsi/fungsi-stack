@@ -4,39 +4,44 @@ import logger from "../core/logger";
 import { createErrorLog } from "./createErrorLog";
 import { createErrorResponse } from "./createErrorResponse";
 
+type ErrFN = (err: Error) => number;
+type StringCodeOrFN = number | ErrFN;
+
 function handleError(
   err: Error,
   serviceName: string,
   servicePath: string,
   res: Response,
-  httpCode: number,
-  errorCode: number,
+  httpCode: StringCodeOrFN,
+  errorCode: StringCodeOrFN,
 ) {
-  logger.error(createErrorLog(serviceName, servicePath, errorCode, err));
-  res.status(httpCode).json(createErrorResponse(errorCode, err));
+  const _errorCode = G.isFunction(errorCode) ? errorCode(err) : errorCode;
+  const _httpCode = G.isFunction(httpCode) ? httpCode(err) : httpCode;
+  logger.error(createErrorLog(serviceName, servicePath, _errorCode, err));
+  res.status(_httpCode).json(createErrorResponse(_errorCode, err));
 }
 
 function processError(
   serviceName: string,
   servicePath: string,
   res: Response,
-  httpCode: number,
-  errorCode: number,
+  httpCode: StringCodeOrFN,
+  errorCode: StringCodeOrFN,
 ): (err: Error) => void;
 function processError(
   serviceName: string,
   servicePath: string,
   res: Response,
-  httpCode: number,
-  errorCode: number,
+  httpCode: StringCodeOrFN,
+  errorCode: StringCodeOrFN,
   err?: Error,
 ): void;
 function processError(
   serviceName: string,
   servicePath: string,
   res: Response,
-  httpCode: number,
-  errorCode: number,
+  httpCode: StringCodeOrFN,
+  errorCode: StringCodeOrFN,
   err?: Error,
 ) {
   if (G.isNullable(err)) {

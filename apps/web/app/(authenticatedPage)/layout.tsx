@@ -1,5 +1,5 @@
 import AuthAppShell from "../_components/AuthAppShell";
-import ServerAuthGuard from "../_components/ServerAuthGuard";
+import ClientAuthGuard from "../_components/ClientAuthGuard";
 
 export default function Authenticated({
   children,
@@ -7,8 +7,8 @@ export default function Authenticated({
   children: React.ReactNode;
 }) {
   return (
-    <ServerAuthGuard>
+    <ClientAuthGuard>
       <AuthAppShell>{children}</AuthAppShell>
-    </ServerAuthGuard>
+    </ClientAuthGuard>
   );
 }

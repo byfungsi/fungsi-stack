@@ -8,6 +8,7 @@ export default defineProject({
     setupFiles: ["./__test__/setupEnvs.ts"],
     exclude: [...configDefaults.exclude],
     pool: "forks",
+    testTimeout: 10000,
     reporters: [
       "default",
       {

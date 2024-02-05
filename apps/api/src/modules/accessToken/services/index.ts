@@ -122,10 +122,33 @@ const getAccessTokenByAccessToken = (accessToken: string) =>
     .then(getOrThrowNotFound(ENTITIES.accessToken, RESOURCES.database))
     .then(ZAccessToken.parse);
 
+const updateToken = (token: TAccessToken) =>
+  prismaClient.accessToken.update({
+    where: {
+      id: token.id,
+    },
+    data: {
+      accessToken: signAccessToken(token.userId, token.clientId),
+      refreshToken: signRefreshToken(token.userId, token.clientId),
+    },
+  });
+
+const execRefreshTokenFlow = (refreshToken: string) =>
+  prismaClient.accessToken
+    .findFirst({
+      where: {
+        refreshToken,
+      },
+    })
+    .then(getOrThrowNotFound(ENTITIES.refreshToken, RESOURCES.database))
+    .then(updateToken)
+    .then(ZAccessToken.parse);
+
 const accessTokenService = {
   getOrCreateAccessTokenByUser,
   verifyAccessToken,
   getAccessTokenByAccessToken,
+  execRefreshTokenFlow,
   deleteAccessTokenByUserId,
 };
 

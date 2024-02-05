@@ -1,10 +1,11 @@
 "use client";
 import axios from "axios";
-import { ERROR_CODES } from "@repo/validator";
+import { ERROR_CODES, ROUTES, TRefreshTokenResponse } from "@repo/validator";
 import { R } from "@mobily/ts-belt";
 import { getCookie, hasCookie, setCookie } from "cookies-next";
 import { API_URL } from "../_constants/appEnv";
 import { TOKEN_KEY } from "../_constants/keys";
+import { setServerToken } from "../_actions/setServerToken";
 
 const fidAxios = axios.create({
   baseURL: `${API_URL}/api`,
@@ -42,7 +43,7 @@ fidAxios.interceptors.response.use(
     ) {
       originalRequest._retryCount += 1;
       const RResponse = await R.fromPromise(
-        fidAxios.post("/users/refresh-token"),
+        fidAxios.post<TRefreshTokenResponse>(ROUTES.refresh),
       );
       if (R.isError(RResponse)) {
         return Promise.reject(error);
@@ -50,14 +51,15 @@ fidAxios.interceptors.response.use(
       const response = R.toNullable(RResponse)!;
       if (response.data?.data.accessToken) {
         setCookie(TOKEN_KEY, response.data.data.accessToken);
+        setServerToken(response.data.data.accessToken);
       }
-      return Promise.resolve();
+      return Promise.resolve(R.getExn(RResponse));
     }
-    if (error.response?.data?.code === ERROR_CODES.ACCESS_TOKEN_EXPIRED) {
-      if (typeof window !== "undefined") {
-        window.location.href = "/login";
-      }
-    }
+    // if (error.response?.data?.code === ERROR_CODES.ACCESS_TOKEN_EXPIRED) {
+    //   if (typeof window !== "undefined") {
+    //     window.location.href = "/login";
+    //   }
+    // }
     return Promise.reject(error);
   },
 );

@@ -3,6 +3,7 @@ const ENTITIES = {
   clientSecret: "clientSecret",
   user: "user",
   accessToken: "accessToken",
+  refreshToken: "refreshToken",
   provider: "provider",
 } as const;
 
