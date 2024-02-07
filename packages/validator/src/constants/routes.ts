@@ -8,4 +8,5 @@ export const ROUTES = {
   administrationClients: "/administration/clients",
 } as const;
 
+export const removeBaseSlash = (path: string) => path.replace(/^\//, "");
 export const withBaseUrl = (path: string) => `/api${path}`;

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { zDateType } from "../utils/zDateTypes";
 /**
  * model Client {
   id          String        @id @default(uuid())
@@ -17,9 +18,9 @@ export const ZClient = z.object({
   id: z.string(),
   uniqueId: z.string(),
   name: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  deletedAt: z.date().optional().nullable(),
+  createdAt: zDateType,
+  updatedAt: zDateType,
+  deletedAt: zDateType.optional().nullable(),
 });
 
 export const ZClientSensitive = ZClient.extend({

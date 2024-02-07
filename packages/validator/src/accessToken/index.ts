@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { zDateType } from "../utils/zDateTypes";
 /**
  * model AccessToken {
   id           String   @id @default(uuid())
@@ -19,8 +20,8 @@ export const ZAccessToken = z.object({
   refreshToken: z.string(),
   userId: z.string(),
   clientId: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: zDateType,
+  updatedAt: zDateType,
 });
 
 export const ZAccessTokenCreate = ZAccessToken.pick({

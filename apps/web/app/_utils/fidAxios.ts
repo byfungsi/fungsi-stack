@@ -2,10 +2,11 @@
 import axios from "axios";
 import { ERROR_CODES, ROUTES, TRefreshTokenResponse } from "@repo/validator";
 import { R } from "@mobily/ts-belt";
-import { getCookie, hasCookie, setCookie } from "cookies-next";
+import { deleteCookie, getCookie, hasCookie, setCookie } from "cookies-next";
 import { API_URL } from "../_constants/appEnv";
 import { TOKEN_KEY } from "../_constants/keys";
 import { setServerToken } from "../_actions/setServerToken";
+import { deleteServerToken } from "../_actions/deleteServerToken";
 
 const fidAxios = axios.create({
   baseURL: `${API_URL}/api`,
@@ -37,29 +38,28 @@ fidAxios.interceptors.response.use(
     originalRequest._retryCount = originalRequest._retryCount
       ? originalRequest._retryCount
       : 0;
-    if (
-      error.response?.data?.code === ERROR_CODES.ACCESS_TOKEN_EXPIRED &&
-      originalRequest._retryCount <= 3
-    ) {
+    if (originalRequest._retryCount >= 3) {
+      window.location.href = "/login";
+      deleteCookie(TOKEN_KEY);
+      deleteServerToken();
+      return;
+    }
+    if (error.response?.data?.code === ERROR_CODES.ACCESS_TOKEN_EXPIRED) {
       originalRequest._retryCount += 1;
       const RResponse = await R.fromPromise(
         fidAxios.post<TRefreshTokenResponse>(ROUTES.refresh),
       );
       if (R.isError(RResponse)) {
-        return Promise.reject(error);
+        return fidAxios(originalRequest);
       }
       const response = R.toNullable(RResponse)!;
       if (response.data?.data.accessToken) {
         setCookie(TOKEN_KEY, response.data.data.accessToken);
         setServerToken(response.data.data.accessToken);
       }
-      return Promise.resolve(R.getExn(RResponse));
+      return fidAxios(originalRequest);
     }
-    // if (error.response?.data?.code === ERROR_CODES.ACCESS_TOKEN_EXPIRED) {
-    //   if (typeof window !== "undefined") {
-    //     window.location.href = "/login";
-    //   }
-    // }
+
     return Promise.reject(error);
   },
 );

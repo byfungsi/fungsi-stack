@@ -1,7 +1,6 @@
 import {
   ERROR_CODES,
   ROUTES,
-  TCreateUserRequest,
   ZLoginResponse,
   ZRefreshTokenResponse,
   withBaseUrl,
@@ -11,6 +10,7 @@ import dayjs from "dayjs";
 import request from "supertest";
 import { app } from "../../../../core/app";
 import HTTP_CODES from "../../../../constants/httpCodes";
+import { TEST_EMAIL, TEST_PASSWORD } from "../../../../__test__/testConstants";
 
 describe("Refreshtoken", () => {
   const RoutePath = withBaseUrl(ROUTES.refresh);
@@ -26,30 +26,15 @@ describe("Refreshtoken", () => {
   });
 
   describe("expiration", () => {
-    const EMAIL = "email123.com";
-    const PASSWORD = "password123";
-    const NAME = "name12312";
     let loggedinReq: request.Agent;
     let token: string;
-    beforeAll(async () => {
-      const bodyCreate: TCreateUserRequest = {
-        email: EMAIL,
-        password: PASSWORD,
-        name: NAME,
-      };
-      const reqIntent = request.agent(app);
-      await reqIntent.post(withBaseUrl(ROUTES.intent));
-      await reqIntent
-        .post(withBaseUrl(ROUTES.administrationUsers))
-        .send(bodyCreate);
-    });
 
     beforeEach(async () => {
       loggedinReq = request.agent(app);
       await loggedinReq.post(withBaseUrl(ROUTES.intent));
       const res = await loggedinReq
         .post(withBaseUrl(ROUTES.login))
-        .send({ email: EMAIL, password: PASSWORD });
+        .send({ email: TEST_EMAIL, password: TEST_PASSWORD });
       const loginBody = ZLoginResponse.parse(res.body);
       token = loginBody.data!.accessToken;
     });

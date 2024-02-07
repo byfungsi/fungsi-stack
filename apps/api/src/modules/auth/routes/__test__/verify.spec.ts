@@ -3,6 +3,7 @@ import {
   ROUTES,
   TCreateUserRequest,
   ZLoginResponse,
+  ZVerifyResponse,
   withBaseUrl,
 } from "@repo/validator";
 import { vi, describe, beforeAll, test, expect } from "vitest";
@@ -41,6 +42,7 @@ describe("Verify", () => {
     expect(res.headers["set-cookie"]).toEqual([
       expect.stringContaining("refreshToken"),
     ]);
+    expect(ZVerifyResponse.safeParse(res.body).success).toBe(true);
   });
 
   test("error on random token", async () => {

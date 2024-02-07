@@ -1,12 +1,14 @@
 import { PrismaClient } from "@prisma/client";
 import { config } from "dotenv";
+import { hash } from "./hash";
+import randomStringAsBase64Url from "./rand";
 
 config();
 
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.client.upsert({
+  const client = await prisma.client.upsert({
     where: {
       uniqueId: process.env.SELF_CLIENT_ID,
       secret: process.env.SELF_CLIENT_SECRET,
@@ -18,6 +20,28 @@ async function main() {
       name: "Self",
     },
   });
+  if (process.env.NODE_ENV === "test") {
+    const user = await prisma.user.create({
+      data: {
+        name: "test",
+        email: "test@mail.com",
+        clientId: client.uniqueId,
+        password: await hash("Password123"),
+      },
+    });
+    await prisma.client.create({
+      data: {
+        name: "test_client",
+        secret: randomStringAsBase64Url(20),
+        uniqueId: randomStringAsBase64Url(20),
+        ClientOwner: {
+          create: {
+            ownerId: user.id,
+          },
+        },
+      },
+    });
+  }
 }
 
 main()

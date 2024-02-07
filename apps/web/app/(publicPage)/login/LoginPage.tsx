@@ -24,6 +24,7 @@ import useLoginQuery from "../../_hooks/useLoginQuery";
 import { TOKEN_KEY } from "../../_constants/keys";
 import { getErrorMessage } from "../../_utils/getErrorMessage";
 import { setServerToken } from "../../_actions/setServerToken";
+import { setUser } from "../../_utils/storage";
 import { TLoginSchema, loginSchema } from "./schema";
 
 const LoginPage = () => {
@@ -39,8 +40,9 @@ const LoginPage = () => {
         color: "green",
       });
       setCookie(TOKEN_KEY, response.data.data.accessToken);
+      setUser(response.data.data.user);
       setServerToken(response.data.data.accessToken);
-      router.push("/");
+      router.push("/welcome");
     };
     const onError = (err: Error) => {
       notifications.show({

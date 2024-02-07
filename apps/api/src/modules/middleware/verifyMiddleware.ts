@@ -64,7 +64,7 @@ const verifyMiddleware = asyncHandler(
       );
       return;
     }
-    const user = userServices.getUserById(
+    const user = await userServices.getUserById(
       accessTokenData.userId,
       accessTokenData.clientId,
     );

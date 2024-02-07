@@ -3,6 +3,7 @@ import {
   AppShell,
   Avatar,
   Button,
+  Center,
   Flex,
   Group,
   Image,
@@ -13,13 +14,21 @@ import {
 } from "@mantine/core";
 import NextImage from "next/image";
 import Link from "next/link";
-import { LogOut } from "lucide-react";
+import { HomeIcon, LogOut, UsersRound } from "lucide-react";
+import useLogout from "../_hooks/useLogout";
+import { getUser } from "../_utils/storage";
 
 export default function AuthAppShell({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { isPending, mutate } = useLogout();
+  const user = getUser();
+  if (!user) {
+    window.location.href = "/login";
+    return null;
+  }
   return (
     <Flex direction="column">
       <AppShell
@@ -41,13 +50,19 @@ export default function AuthAppShell({
             </Group>
             <Menu position="bottom-end">
               <Menu.Target>
-                <Avatar mr="sm">BS</Avatar>
+                <Avatar mr="sm">{}</Avatar>
               </Menu.Target>
               <Menu.Dropdown>
-                <Menu.Item p="md">Jane Doe</Menu.Item>
+                <Center p="md">Jane Doe</Center>
                 <Menu.Divider />
                 <Group px="md" py="xs">
-                  <Button variant="outline" size="xs" radius="lg">
+                  <Button
+                    variant="outline"
+                    size="xs"
+                    radius="lg"
+                    loading={isPending}
+                    onClick={() => mutate()}
+                  >
                     <LogOut size={16} />
                     <Text ml="xs" size="sm">
                       Sign out
@@ -61,20 +76,20 @@ export default function AuthAppShell({
         <AppShell.Navbar>
           <AppShell.Section>
             <NavLink
-              label="Welcome"
+              label="Home"
               component={Link}
+              leftSection={<HomeIcon />}
               href="/welcome"
-              description={"mana ada"}
             />
             <NavLink
               label="Client Management"
               component={Link}
               href="/clients"
-              description={"mana ada"}
+              leftSection={<UsersRound />}
             />
           </AppShell.Section>
         </AppShell.Navbar>
-        <AppShell.Main>{children}</AppShell.Main>
+        <AppShell.Main bg="gray.2">{children}</AppShell.Main>
       </AppShell>
     </Flex>
   );

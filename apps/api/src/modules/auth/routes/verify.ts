@@ -10,6 +10,7 @@ import { MESSAGE } from "../../../constants/message";
 import accessTokenService from "../../accessToken/services";
 import processSuccess from "../../../utils/processSuccess";
 import { SIGN_KEY } from "../../../constants/apiEnvs";
+import userServices from "../../users/services";
 
 const serviceName = "auth";
 
@@ -63,6 +64,10 @@ const verify = asyncHandler(async (req: Request, res: Response) => {
     );
     return;
   }
+  const user = await userServices.getUserById(
+    accessTokenData.userId,
+    accessTokenData.clientId,
+  );
   res.cookie("refreshToken", accessTokenData.refreshToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -83,7 +88,7 @@ const verify = asyncHandler(async (req: Request, res: Response) => {
     );
     return;
   }
-  processSuccess(res, serviceName, servicePath, {});
+  processSuccess(res, serviceName, servicePath, { user });
 });
 
 export default verify;

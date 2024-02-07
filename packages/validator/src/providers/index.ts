@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { ZClient } from "../client";
+import { zDateType } from "../utils/zDateTypes";
 /**
  * model Providers {
   id                   String   @id @default(uuid())
@@ -20,6 +21,6 @@ export const ZProvider = z.object({
   client: ZClient,
   providerName: z.string(),
   providerClientSecret: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: zDateType,
+  updatedAt: zDateType,
 });
