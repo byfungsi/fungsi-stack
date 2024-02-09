@@ -1,12 +1,9 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { TOKEN_KEY } from "./_constants/keys";
+import { Button } from "@repo/ui/components/ui/button";
 
-const RootPath = () => {
-  if (!cookies().get(TOKEN_KEY)) {
-    redirect("/login");
-  }
-  redirect("/welcome");
-};
+const Home = () => (
+  <div className="p-5">
+    <Button>Hello, world</Button>
+  </div>
+);
 
-export default RootPath;
+export default Home;

@@ -1,7 +1,9 @@
 import { defineConfig, configDefaults } from "vitest/config";
+import tsconfigPaths from "vite-tsconfig-paths";
 import { setup } from "./__test__/globalSetup.js";
 
 export default defineConfig({
+  plugins: [tsconfigPaths()],
   test: {
     globals: true,
     forceRerunTriggers: [

@@ -4,7 +4,9 @@
     "declaration": false,
     "declarationMap": false,
     "paths": {
-      "@tanstack/react-query": ["./node_modules/@tanstack/react-query"]
+      "@tanstack/react-query": ["./node_modules/@tanstack/react-query"],
+      "@repo/ui": ["./node_modules/@repo/ui"],
+      "@ui/*": ["../../packages/ui/src/*"]
     },
     "plugins": [
       {
@@ -18,7 +20,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "vitest.config.ts"
+    "vitest.config.ts",
+    "tailwind.config.js"
   ],
   "exclude": ["node_modules"]
 }

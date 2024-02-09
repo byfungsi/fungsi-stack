@@ -16,6 +16,12 @@ const getErrorCode = (err: Error) => {
     return ERROR_CODES.NOT_FOUND_UNCAUGHT_ERROR;
   }
   if (
+    err instanceof Prisma.PrismaClientKnownRequestError &&
+    err.code === "P2001"
+  ) {
+    return ERROR_CODES.NOT_FOUND_UNCAUGHT_ERROR;
+  }
+  if (
     err instanceof Prisma.PrismaClientKnownRequestError ||
     err instanceof Prisma.PrismaClientUnknownRequestError ||
     err instanceof Prisma.PrismaClientValidationError

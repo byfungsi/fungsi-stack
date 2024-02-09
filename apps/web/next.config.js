@@ -10,11 +10,12 @@ if (fs.existsSync(path.join(__dirname, "../../.env"))) {
 module.exports = {
   output: "standalone",
   reactStrictMode: true,
+  transpilePackages: ["@repo/ui"],
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
-  experimental: {
-    outputFileTracingRoot: path.join(__dirname, "../../"),
-    optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
-  },
+  // experimental: {
+  //   outputFileTracingRoot: path.join(__dirname, "../../"),
+  //   optimizePackageImports: ["@repo/ui"],
+  // },
 };

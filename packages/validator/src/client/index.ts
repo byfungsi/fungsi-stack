@@ -26,3 +26,7 @@ export const ZClient = z.object({
 export const ZClientSensitive = ZClient.extend({
   secret: z.string(),
 });
+
+export type TClient = z.infer<typeof ZClient>;
+
+export type TClientSensitive = z.infer<typeof ZClientSensitive>;

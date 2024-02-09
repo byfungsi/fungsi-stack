@@ -9,7 +9,6 @@ logs
 # Editor
 .editorconfig
 .idea
-.vscode
 
 # Local env files
 .env

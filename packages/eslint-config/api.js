@@ -1,6 +1,6 @@
 const { resolve } = require("node:path");
 
-const project = resolve(process.cwd(), "tsconfig.json");
+const project = resolve(process.cwd(), "./apps/api", "tsconfig.json");
 
 /** @type {import("eslint").Linter.Config} */
 module.exports = {

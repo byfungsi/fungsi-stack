@@ -1,0 +1,281 @@
+{
+  "import for test": {
+    "prefix": "imft",
+    "description": "import needed for test",
+    "scope": "tpyescript,javascript",
+    "body": [
+      "import {",
+      "  ERROR_CODES,",
+      "  ROUTES,",
+      "  ZLoginResponse,",
+      "  withBaseUrl,",
+      "} from \"@repo/validator\";",
+      "import request from \"supertest\";",
+      "import HTTP_CODES from \"@api/constants/httpCodes\";",
+      "import { app } from \"@api/core/app\";",
+      "import { TEST_EMAIL, TEST_PASSWORD } from \"@api/__test__/testConstants\";",
+      ""
+    ]
+  },
+  "process result": {
+    "prefix": "cpros",
+    "description": "",
+    "scope": "typescript,javascript",
+    "body": [
+      "  if (R.isError($1)) {",
+      "    R.tapError(",
+      "      $1,",
+      "      processError(",
+      "        serviceName,",
+      "        servicePath,",
+      "        res,",
+      "        HTTP_CODES.$2,",
+      "        ERROR_CODES.$3,",
+      "      ),",
+      "    );",
+      "    return;",
+      "  }",
+      "  const $4 = R.getExn($1)"
+    ]
+  },
+  "create use form": {
+    "prefix": "cufe",
+    "description": "create use form",
+    "scope": "typescript, javascript",
+    "body": [
+      "  const form = useForm<$1>({",
+      "    validate: zodResolver($2),",
+      "  });",
+      "  const handleSubmit = (value: $1) => {",
+      "    const onError = () => {};",
+      "    const onSuccess = () => {};",
+      "    mutate(value, {",
+      "      onError,",
+      "      onSuccess,",
+      "    });",
+      "  };"
+    ]
+  },
+  "create zod type": {
+    "prefix": "czt",
+    "description": "",
+    "scope": "typescript,javascript",
+    "body": [
+      "import { z } from \"zod\";",
+      "",
+      "export const Z$1 = z.object({",
+      "  $2",
+      "});",
+      "",
+      "export type T$1 = z.infer<typeof Z$1>;",
+      ""
+    ]
+  },
+  "import zod": {
+    "prefix": "imz",
+    "description": "",
+    "scope": "typescript, javascript",
+    "body": ["import { z } from \"zod\""]
+  },
+  "create use mutation": {
+    "prefix": "cume",
+    "description": "",
+    "scope": "typescript, javascript",
+    "body": [
+      "import {",
+      "  ROUTES,",
+      "} from \"@repo/validator\";",
+      "import { useMutation } from \"@tanstack/react-query\";",
+      "import fidAxios from \"../_utils/fidAxios\";",
+      "",
+      "const $1 = (param: $2) =>",
+      "    fidAxios.post<$3>($4, param)",
+      "",
+      "const $5 = () => {",
+      "  const query = useMutation({",
+      "    mutationFn: $1,",
+      "  });",
+      "",
+      "  return query;",
+      "};",
+      "",
+      "export default $5;",
+      ""
+    ]
+  },
+  "test success": {
+    "prefix": "tsuc",
+    "description": "test sucess",
+    "scope": "typescript,javascript",
+    "body": [
+      "  test(\"success\", async () => {",
+      "    const res = await loggedinReq.get(RoutePath);",
+      "",
+      "    expect(res.status).toBe(HTTP_CODES.SUCCESS);",
+      "    expect($1.safeParse(res.body).success).toBe(true);",
+      "  });"
+    ]
+  },
+  "test body error": {
+    "prefix": "tbe",
+    "description": "test kok body error",
+    "scope": "typescript,javascript",
+    "body": [
+      "",
+      "  test(\"body error\", async () => {",
+      "    const body = {};",
+      "    const res = await loggedinReq",
+      "      .post(RoutePath)",
+      "      .send(body);",
+      "",
+      "    expect(res.status).toBe(HTTP_CODES.BAD_REQUEST);",
+      "    expect(res.body).toStrictEqual(",
+      "      expect.objectContaining({",
+      "        code: ERROR_CODES.INVALID_BODY,",
+      "      }),",
+      "    );",
+      "  });"
+    ]
+  },
+  "body validation": {
+    "prefix": "rbv",
+    "description": "route body validation",
+    "scope": "typescript, javascript",
+    "body": [
+      "  const $1 = R.fromExecution(() => $2.parse(req.body));",
+      "  if (R.isError($1)) {",
+      "    R.tapError(",
+      "      $1,",
+      "      processError(",
+      "        serviceName,",
+      "        servicePath,",
+      "        res,",
+      "        HTTP_CODES.BAD_REQUEST,",
+      "        ERROR_CODES.INVALID_BODY,",
+      "      ),",
+      "    );",
+      "    return;",
+      "  }",
+      "  const validatedBody = R.getExn($1);"
+    ]
+  },
+  "test route path": {
+    "prefix": "trp",
+    "description": "test route path",
+    "scope": "javascript,typescript",
+    "body": ["const RoutePath = withBaseUrl(ROUTES.$1);"]
+  },
+  "test login": {
+    "prefix": "tlogin",
+    "description": "ya login",
+    "scope": "typescript,javascript",
+    "body": [
+      "    let loggedinReq: request.Agent;",
+      "",
+      "    beforeAll(async () => {",
+      "    loggedinReq = request.agent(app);",
+      "    await loggedinReq.post(withBaseUrl(ROUTES.intent));",
+      "    const res = await loggedinReq",
+      "      .post(withBaseUrl(ROUTES.login))",
+      "      .send({ email: TEST_EMAIL, password: TEST_PASSWORD });",
+      "    const loginBody = ZLoginResponse.parse(res.body);",
+      "    const token = loginBody.data!.accessToken;",
+      "    loggedinReq.set(\"Authorization\", `Bearer \\${token}`);",
+      "    });",
+      "",
+      ""
+    ]
+  },
+  "create use query": {
+    "prefix": "cuqe",
+    "description": "",
+    "scope": "typescript,javascript",
+    "body": [
+      "import { ROUTES } from \"@repo/validator\";",
+      "import { useQuery } from \"@tanstack/react-query\";",
+      "import fidAxios from \"../_utils/fidAxios\";",
+      "",
+      "const $1 = () => fidAxios.get(ROUTES.administrationClients);",
+      "",
+      "export const $2 = () => [$3];",
+      "",
+      "const $4 = () => {",
+      "  const query = useQuery({",
+      "    queryKey: $2(),",
+      "    queryFn: $1,",
+      "  });",
+      "",
+      "  return query;",
+      "};",
+      "",
+      "export default $4;",
+      ""
+    ]
+  },
+  "prepare intent": {
+    "prefix": "tpin",
+    "description": "heh2",
+    "scope": "javascript, typescript",
+    "body": [
+      "  const RoutePath = withBaseUrl($1);",
+      "  let reqIntent: request.Agent;",
+      "  beforeAll(async () => {",
+      "    reqIntent = request.agent(app);",
+      "    await reqIntent.post(withBaseUrl(ROUTES.intent));",
+      "  });"
+    ]
+  },
+  "IMport supertest": {
+    "prefix": "imsp",
+    "description": "hehe",
+    "scope": "javascript,typescript",
+    "body": ["import request from \"supertest\""]
+  },
+  "Test test": {
+    "prefix": "ttest",
+    "description": "test test",
+    "scope": "javascript,typescript",
+    "body": ["  test(\"$1\", async () => {", "    $2", "  })"]
+  },
+  "test describe": {
+    "prefix": "tdescribe",
+    "description": "describe",
+    "scope": "javascript,typescript",
+    "body": ["describe(\"$1\", () => {", "  $2", "})"]
+  },
+  // Place your apms-3.0 workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+  // description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+  // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+  // used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+  // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+  // Placeholders with the same ids are connected.
+  // Example:
+  // "Print to console": {
+  // 	"scope": "javascript,typescript",
+  // 	"prefix": "log",
+  // 	"body": [
+  // 		"console.log('$1');",
+  // 		"$2"
+  // 	],
+  // 	"description": "Log output to console"
+  // }
+  "Create Controller": {
+    "scope": "javascript,typescript",
+    "prefix": "controller",
+    "body": [
+      "import { Request, Response } from \"express\";",
+      "import asyncHandler from \"express-async-handler\";",
+      "const serviceName = \"$1\";",
+      "",
+      "const $2 = asyncHandler(async (req: Request, res: Response) => {",
+      "  const servicePath = \"$2\";",
+      "  res.locals.serviceName = serviceName;",
+      "  res.locals.servicePath = servicePath;",
+      "  $3",
+      "});",
+      "",
+      "export default $2;",
+      ""
+    ]
+  }
+}

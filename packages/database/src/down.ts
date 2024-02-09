@@ -10,7 +10,6 @@ async function main() {
 
 main()
   .then(async () => {
-    console.log("sakses");
     await client.end();
   })
   .catch(async (err) => {

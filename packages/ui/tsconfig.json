@@ -1,11 +1,9 @@
 {
-  "extends": "@repo/typescript-config/api.json",
+  "extends": "@repo/typescript-config/react-library.json",
   "compilerOptions": {
-    "lib": ["ES2015"],
-    "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@api/*": ["./src/*"]
+      "@ui/*": ["./src/*"]
     }
   },
   "include": ["src"],
