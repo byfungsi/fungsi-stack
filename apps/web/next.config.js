@@ -14,8 +14,8 @@ module.exports = {
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
-  // experimental: {
-  //   outputFileTracingRoot: path.join(__dirname, "../../"),
-  //   optimizePackageImports: ["@repo/ui"],
-  // },
+  experimental: {
+    outputFileTracingRoot: path.join(__dirname, "../../"),
+    optimizePackageImports: ["@repo/ui"],
+  },
 };
