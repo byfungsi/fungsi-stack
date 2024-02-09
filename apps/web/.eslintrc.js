@@ -7,7 +7,7 @@ module.exports = {
     project: true,
   },
   ignorePatterns: [
-    "tailwind.config.ts",
+    "tailwind.config.js",
     "postcss.config.js",
     "next.config.js",
     "vitest.config.mts",

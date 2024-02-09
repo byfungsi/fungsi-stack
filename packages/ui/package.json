@@ -31,7 +31,7 @@
   "exports": {
     "./ui.css": "./src/ui.css",
     "./postcss.config": "./postcss.config.js",
-    "./tailwind.config": "./tailwind.config.ts",
+    "./tailwind.config": "./tailwind.config.js",
     "./lib/*": "./src/lib/*.ts",
     "./components/*": "./src/components/*.tsx"
   }
