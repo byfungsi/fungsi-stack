@@ -1,6 +1,6 @@
-# Monorepo Starter by Fungsi
+# Fungsi Stack
 
-This is an official starter Turborepo.
+This is official monorepo starter created by Fungsi. currently still in alpha.
 
 ## What's inside?
 
